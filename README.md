@@ -2,7 +2,7 @@
 react-native-router 是对navigator的一个封装，以配置的方式管理所有的页面及其他功能。
 
 # Example
-`javascript
+```javascript
 <Router ref="router" renderTitle={(route)=> {
     return <Text style={{color: "white"}}>{route.title}</Text>;
 }}
@@ -30,7 +30,7 @@ react-native-router 是对navigator的一个封装，以配置的方式管理所
                 component: <RegisterStep2/>
             }]
         }]}></Router>
-`
+```
 
 ## Router Property
 
@@ -85,3 +85,5 @@ type:array
 * component(required)
 type:component
 path对应的页面
+
+

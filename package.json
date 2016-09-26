@@ -1,0 +1,30 @@
+{
+  "name": "react-native-router",
+  "version": "1.0.0",
+  "description": "react-native-router",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MonkeyKingPlus/react-native-router.git"
+  },
+  "keywords": [
+    "react-native",
+    "react-native-router"
+  ],
+  "author": "jean.h.ma",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MonkeyKingPlus/react-native-router/issues"
+  },
+  "homepage": "https://github.com/MonkeyKingPlus/react-native-router#readme",
+  "dependencies": {
+    "react": "^15.3.2",
+    "react-native": "^0.34.0"
+  }
+}

@@ -41,12 +41,12 @@ default:
 ```javascript
 <Text>{route.title}</Text>
 ```
-绘制NavigationBar中title的样式，必须返回一个component。
+设置NavigationBar中title的样式，必须返回一个component。
 
 ### renderLeftButton(required)
 type:function
 parameter:(route,navigator,index,navState)
-绘制返回按钮的样式，默认返回null，及没有返回按钮
+设置back键，默认返回null（即隐藏back键）
 
 ### navigationBarStyle(optional)
 type:object
@@ -67,15 +67,15 @@ NavigationBar的标题
 * renderLeftButton(optional)
 type:function
 parameter:(route,navigator,index,navState)
-绘制返回按钮，如果提供了对应的方法将重写Router.renderLeftButton
+设置back键，如果提供了此方法将重写Router.renderLeftButton
 * renderRightButton(optional)
 type:function
 parameter:(route,navigator,index,navState)
-绘制导航右边的按钮
+设置导航右边的按钮
 * renderTitle(optional)
 type:function
 parameter:(route,navigator,index,navState)
-绘制NavigationBar中的title，如果提供了此方法将重写Router.renderTitle
+设置NavigationBar中的title，如果提供了此方法将重写Router.renderTitle
 * hideNavigationBar(optional)
 type:boolean
 default:false
@@ -89,8 +89,24 @@ path对应的页面
 
 ## navigator methods
 ### $push(path[,route])
+跳转到下一个route，如：
+```javascript
+this.props.navigator.$push("register")
+```
+如果是嵌套的route，path的结构类似url，如：
+```javascript
+this.props.navigator.$push("register/register-step2");
+```
+在Router.routes中已经对每个route进行了配置，如果在$push之前想重写已经配置的route属性，可以通过第二个参数进行修改，如：
+```javascript
+this.props.navigator.$push("register",{
+	title:"Register"
+});
+```
 ### $pop()
+返回上一个route
 ### $replace(path[,route])
+替换当前的route，第二个参数的作用和$push一样。
 ### $refreshNavBar([route])
 更新navigationBar的样式.包括title,leftButton,rightButton.
 如:

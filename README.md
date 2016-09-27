@@ -57,6 +57,7 @@ type:array
 路由配置
 
 #### routes.item 数据结构如下
+
 * path(required)
 type:string
 路由名称
@@ -85,5 +86,21 @@ type:array
 * component(required)
 type:component
 path对应的页面
+
+## navigator methods
+### $push(path[,route])
+### $pop()
+### $replace(path[,route])
+### $refreshNavBar([route])
+更新navigationBar的样式.包括title,leftButton,rightButton.
+如:
+```javascript
+this.props.navigator.$refreshNavBar({
+	title:"test",
+    renderLeftButton:()=>{},
+    renderRightButton:()=>{}
+})
+```
+目前只接受以上三个参数
 
 

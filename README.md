@@ -108,15 +108,14 @@ this.props.navigator.$push("register",{
 ### $replace(path[,route])
 替换当前的route，第二个参数的作用和$push一样。
 ### $refreshNavBar([route])
-更新navigationBar的样式.包括title,leftButton,rightButton.
+更新navigationBar的样式.包括title,renderLeftButton,renderRightButton,hideNavigationBar,目前仅支持这4个参数。
 如:
 ```javascript
 this.props.navigator.$refreshNavBar({
-	title:"test",
+    title:"test",
     renderLeftButton:()=>{},
     renderRightButton:()=>{}
 })
 ```
-目前只接受以上三个参数
 
 

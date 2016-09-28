@@ -91,6 +91,37 @@ path对应的页面
 
 PS：如果在onEnter中返回了一个新的有效的path，在route中将可以访问之前的route和path，分别对应$previousRoute,$previousPath
 
+## navigator methods
+### $push(path[,route])
+跳转到下一个route，如：
+```javascript
+this.props.navigator.$push("register")
+```
+如果是嵌套的route，path的结构类似url，如：
+```javascript
+this.props.navigator.$push("register/register-step2");
+```
+在Router.routes中已经对每个route进行了配置，如果在$push之前想重写已经配置的route属性，可以通过第二个参数进行修改，如：
+```javascript
+this.props.navigator.$push("register",{
+	title:"Register"
+});
+```
+### $pop()
+返回上一个route
+### $replace(path[,route])
+替换当前的route，第二个参数的作用和$push一样。
+### $refreshNavBar([route])
+更新navigationBar的样式.包括title,renderLeftButton,renderRightButton,hideNavigationBar,目前仅支持这4个参数。
+如:
+```javascript
+this.props.navigator.$refreshNavBar({
+    title:"test",
+    renderLeftButton:()=>{},
+    renderRightButton:()=>{}
+})
+```
+
 ## Authentication
 路由配置
 ```javascript
@@ -126,39 +157,6 @@ const routes = [{
 登录成功后
 ```javascript
 this.props.navigator.$replace(this.props.route.$previousPath);
-```
-
-
-
-## navigator methods
-### $push(path[,route])
-跳转到下一个route，如：
-```javascript
-this.props.navigator.$push("register")
-```
-如果是嵌套的route，path的结构类似url，如：
-```javascript
-this.props.navigator.$push("register/register-step2");
-```
-在Router.routes中已经对每个route进行了配置，如果在$push之前想重写已经配置的route属性，可以通过第二个参数进行修改，如：
-```javascript
-this.props.navigator.$push("register",{
-	title:"Register"
-});
-```
-### $pop()
-返回上一个route
-### $replace(path[,route])
-替换当前的route，第二个参数的作用和$push一样。
-### $refreshNavBar([route])
-更新navigationBar的样式.包括title,renderLeftButton,renderRightButton,hideNavigationBar,目前仅支持这4个参数。
-如:
-```javascript
-this.props.navigator.$refreshNavBar({
-    title:"test",
-    renderLeftButton:()=>{},
-    renderRightButton:()=>{}
-})
 ```
 
 

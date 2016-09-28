@@ -86,6 +86,49 @@ type:array
 * component(required)
 type:component
 path对应的页面
+* onEnter(optional) type:function parameter(route) 在route push时调用。如果要拦截当前的path，可以返回一个新的path，
+也可以什么都不返回，对于认证非常有用。
+
+PS：如果在onEnter中返回了一个新的有效的path，在route中将可以访问之前的route和path，分别对应$previousRoute,$previousPath
+
+## Authentication
+路由配置
+```javascript
+const routes = [{
+	path: "home",
+	title: "Home",
+	component: <Home></Home>
+}, {
+	path: "register",
+	title: "Register-Step1",
+	component: <RegisterStep1></RegisterStep1>,
+	routes: [{
+		path: "step2",
+		title: "Register-Step2",
+		hideNavigationBar: true,
+		component: <RegisterStep2/>
+	}]
+},{
+	path: "login",
+	title: "登录",
+	component: <Login></Login>
+}, {
+	path: "mine",
+	title: "我的",
+	component: <Mine></Mine>,
+	onEnter: ()=> {
+		if (!isLogin) {
+			return "login";
+		}
+	}
+}];
+```
+登录成功后
+```javascript
+this.props.navigator.$replace(this.props.route.$previousPath);
+```
+
+
 
 ## navigator methods
 ### $push(path[,route])

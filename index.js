@@ -12,8 +12,6 @@ class NavigationBarEx extends NavigationBar {
 	}
 
 	render() {
-		console.log("render header : ", this.props);
-		console.log("current route : ", this.currentRoute);
 		if (this.currentRoute && this.currentRoute.hideNavigationBar) {
 			return null;
 		}
@@ -38,6 +36,7 @@ class NavigatorEx extends Navigator {
 	}
 
 	_findRouteByPath(path) {
+		let routes=this.props.routes;
 		let pathNames = path.split("/");
 		let route;
 		while (pathNames.length > 0) {
@@ -66,6 +65,17 @@ class NavigatorEx extends Navigator {
 			...this._findRouteByPath(path),
 			...ops
 		};
+		if(route.onEnter && typeof route.onEnter === "function"){
+			let redirectPath=route.onEnter(route);
+			if(redirectPath){
+				route={
+					...this._findRouteByPath(redirectPath),
+					...ops,
+					$previousPath:path,
+					$previousRoute:route
+				}
+			}
+		}
 		this.push(route);
 	}
 	$pop(){
@@ -86,34 +96,6 @@ class NavigatorEx extends Navigator {
 
 }
 
-/*
- * react native router
- *
- * renderTitle:{function(route, navigator, index, navState)}
- * renderLeftButton:{function(route, navigator, index, navState)}
- * navigationBarStyle:{object}
- * routes:{array}
- * 	item:{
- *       path:{string}
- *       ,title:{string}
- *       ,renderLeftButton:{function}
- *       ,renderRightButton:{function}
- *       ,renderTitle:{function}
- *       ,hideNavigationBar:{boolean}
- *       ,navigationBarStyle:{object}
- *       ,routes:{array}
- *       ,onEnter:{function}
- *       ,onLeave:{function}
- * 	}
- *
- * scene有两个属性props.navigator,props.route
- * props.navigator.$push
- * props.navigator.$pop
- * props.navigator.$replace
- * props.navigator.$refreshNavBar
- *
- *
- * */
 export default class Router extends Component {
 	constructor(props) {
 		super(props);
@@ -129,7 +111,6 @@ export default class Router extends Component {
 		let navigationBarProps = {
 			routeMapper: {
 				LeftButton: (route, navigator, index, navState) => {
-					console.log("render left button");
 					if (index > 0) {
 						if (route.renderLeftButton) {
 							return route.renderLeftButton(route, navigator, index, navState);
@@ -137,19 +118,17 @@ export default class Router extends Component {
 						if (defaultRenderLeftButton) {
 							return defaultRenderLeftButton(route, navigator, index, navState);
 						}
-						console.warn("you don't set LeftButton");
+						console.warn("Router.renderLeftButton is missed.");
 					}
 					return null;
 				},
 				RightButton: (route, navigator, index, navState) => {
-					console.log("render right button");
 					if (route.renderRightButton) {
 						return route.renderRightButton(route, navigator, index, navState);
 					}
 					return null;
 				},
 				Title: (route, navigator, index, navState) => {
-					console.log("render title");
 					if (route.renderTitle) {
 						return route.renderTitle(route, navigator, index, navState);
 					}
@@ -165,7 +144,6 @@ export default class Router extends Component {
 	}
 
 	render() {
-		console.log("render Router");
 		return (
 			<NavigatorEx initialRoute={this.initialRoute}
 						 routes={this.props.routes}
@@ -175,18 +153,19 @@ export default class Router extends Component {
 							 return Navigator.SceneConfigs.HorizontalSwipeJumpFromRight;
 						 }}
 						 renderScene={(route, navigator)=> {
-							 console.log("render Scene");
 							 this.currentRoute = route;
-							 if (route.onEnter) {
-								 let needRenderComponent = route.onEnter(route);
-								 if (!needRenderComponent) {
-									 throw  new Error(`${route.path} must return a available component when fire onEnter`);
-								 }
-								 return React.cloneElement(needRenderComponent, {
-									 route: route,
-									 navigator: navigator
-								 });
-							 }
+							 /*
+							  if (route.onEnter) {
+							  let needRenderComponent = route.onEnter(route);
+							  if (!needRenderComponent) {
+							  throw  new Error(`${route.path} must return a available component when fire onEnter`);
+							  }
+							  return React.cloneElement(needRenderComponent, {
+							  route: route,
+							  navigator: navigator
+							  });
+							  }
+							  */
 							 return React.cloneElement(route.component, {
 								 route: route,
 								 navigator: navigator

@@ -107,6 +107,7 @@ this.props.navigator.$push("register",{
 	title:"Register"
 });
 ```
+页面间传递参数这个方法同样适用。
 ### $pop()
 返回上一个route
 ### $replace(path[,route])

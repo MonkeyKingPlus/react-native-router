@@ -63,6 +63,7 @@ type:array
 
 ### configureScene(optional)
 type:function
+default:Navigator.SceneConfigs.HorizontalSwipeJump
 配置页面切换动画，具体参见[React Native Navigator](https://facebook.github.io/react-native/docs/navigator.html#configurescene)
 
 #### routes.item 数据结构如下

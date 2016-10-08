@@ -111,14 +111,14 @@ export default class Router extends Component {
 		renderLeftButton: PropTypes.func.isRequired,
 		renderTitle: PropTypes.func,
 		routes: PropTypes.array.isRequired,
-		navigationBarStyle: PropTypes.object,
+		navigationBarStyle: PropTypes.any,
 		configureScene: PropTypes.func
 	}
 
 	static defaultProps = {
 		navigationBarStyle: {},
 		configureScene: ()=> {
-			return Navigator.SceneConfigs.PushFromRight;
+			return Navigator.SceneConfigs.HorizontalSwipeJump;
 		}
 	};
 

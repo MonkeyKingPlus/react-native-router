@@ -1,4 +1,4 @@
-import React,{Component} from "react";
+import React, {Component, PropTypes} from "react";
 import {Navigator} from "react-native";
 let {NavigationBar}=Navigator;
 
@@ -6,7 +6,7 @@ class NavigationBarEx extends NavigationBar {
 	get currentRoute() {
 		let routes = this.props.navState.routeStack;
 		if (routes.length && routes.length > 0) {
-			return Object.assign({},routes[routes.length - 1]);
+			return Object.assign({}, routes[routes.length - 1]);
 		}
 		return null;
 	}
@@ -18,10 +18,10 @@ class NavigationBarEx extends NavigationBar {
 		return super.render();
 	}
 
-	refresh(ops={}){
+	refresh(ops = {}) {
 		let routes = this.props.navState.routeStack;
-		let route=routes[routes.length-1];
-		routes[routes.length-1]=Object.assign({},route,ops);
+		let route = routes[routes.length - 1];
+		routes[routes.length - 1] = Object.assign({}, route, ops);
 		this.forceUpdate();
 	}
 }
@@ -36,7 +36,7 @@ class NavigatorEx extends Navigator {
 	}
 
 	_findRouteByPath(path) {
-		let routes=this.props.routes;
+		let routes = this.props.routes;
 		let pathNames = path.split("/");
 		let route;
 		while (pathNames.length > 0) {
@@ -60,38 +60,41 @@ class NavigatorEx extends Navigator {
 	}
 
 
-	$push(path,ops={}){
+	$push(path, ops = {}) {
 		let route = {
 			...this._findRouteByPath(path),
 			...ops
 		};
-		if(route.onEnter && typeof route.onEnter === "function"){
-			let redirectPath=route.onEnter(route);
-			if(redirectPath){
-				route={
+		if (route.onEnter && typeof route.onEnter === "function") {
+			let redirectPath = route.onEnter(route);
+			if (redirectPath) {
+				route = {
 					...this._findRouteByPath(redirectPath),
 					...ops,
-					$previousPath:path,
-					$previousRoute:route
+					$previousPath: path,
+					$previousRoute: route
 				}
 			}
 		}
 		this.push(route);
 	}
-	$pop(){
+
+	$pop() {
 		this.pop();
 	}
-	$replace(path,ops={}){
+
+	$replace(path, ops = {}) {
 		let route = {
 			...this._findRouteByPath(path),
 			...ops
 		};
 		this.replace(route);
 	}
-	$refreshNavBar(ops={}){
-		setTimeout(()=>{
+
+	$refreshNavBar(ops = {}) {
+		setTimeout(()=> {
 			this._navBar.refresh(ops);
-		},128);
+		}, 128);
 	}
 
 }
@@ -101,13 +104,28 @@ export default class Router extends Component {
 		super(props);
 		this.initialRoute = props.routes[0];
 		this.currentRoute = this.initialRoute;
-		this.navigationBarEx=<NavigationBarEx ref="navigationBar" {...this._buildNavigationBar()}/>;
+		this.navigationBarEx = <NavigationBarEx ref="navigationBar" {...this._buildNavigationBar()}/>;
 	}
+
+	static propTypes = {
+		renderLeftButton: PropTypes.func.isRequired,
+		renderTitle: PropTypes.func,
+		routes: PropTypes.array.isRequired,
+		navigationBarStyle: PropTypes.object,
+		configureScene: PropTypes.func
+	}
+
+	static defaultProps = {
+		navigationBarStyle: {},
+		configureScene: ()=> {
+			return Navigator.SceneConfigs.PushFromRight;
+		}
+	};
 
 	_buildNavigationBar() {
 		let defaultRenderLeftButton = this.props.renderLeftButton;
 		let defaultRenderTitle = this.props.renderTitle;
-		let defaultNavigationBarStyle = this.props.navigationBarStyle || {};
+		let defaultNavigationBarStyle = this.props.navigationBarStyle;
 		let navigationBarProps = {
 			routeMapper: {
 				LeftButton: (route, navigator, index, navState) => {
@@ -150,7 +168,7 @@ export default class Router extends Component {
 						 ref="navigator"
 						 navigationBar={this.navigationBarEx}
 						 configureScene={(route, routeStack)=> {
-							 return Navigator.SceneConfigs.HorizontalSwipeJumpFromRight;
+							 return this.props.configureScene(route, routeStack);
 						 }}
 						 renderScene={(route, navigator)=> {
 							 this.currentRoute = route;

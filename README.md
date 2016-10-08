@@ -61,6 +61,10 @@ NavigationBar的样式
 type:array
 路由配置
 
+### configureScene(optional)
+type:function
+配置页面切换动画，具体参见React Native Navigator
+
 #### routes.item 数据结构如下
 
 * path(required)

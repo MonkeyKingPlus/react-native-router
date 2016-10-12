@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from "react";
 import {Navigator} from "react-native";
+
 let {NavigationBar}=Navigator;
 
 class NavigationBarEx extends NavigationBar {
@@ -35,6 +36,10 @@ class NavigatorEx extends Navigator {
 		return null;
 	}
 
+	static propTypes={
+		onChange:PropTypes.func
+	}
+
 	_findRouteByPath(path) {
 		let routes = this.props.routes;
 		let pathNames = path.split("/");
@@ -59,7 +64,6 @@ class NavigatorEx extends Navigator {
 		return route;
 	}
 
-
 	$push(path, ops = {}) {
 		let route = {
 			...this._findRouteByPath(path),
@@ -76,10 +80,12 @@ class NavigatorEx extends Navigator {
 				}
 			}
 		}
+		this.props.onChange("$push",route,path);
 		this.push(route);
 	}
 
 	$pop() {
+		this.props.onChange("$pop",this.currentRoute);
 		this.pop();
 	}
 
@@ -88,11 +94,13 @@ class NavigatorEx extends Navigator {
 			...this._findRouteByPath(path),
 			...ops
 		};
+		this.props.onChange("$replace",route,path);
 		this.replace(route);
 	}
 
 	$refreshNavBar(ops = {}) {
 		setTimeout(()=> {
+			this.props.onChange("$refreshNavBar",ops);
 			this._navBar.refresh(ops);
 		}, 128);
 	}
@@ -103,7 +111,6 @@ export default class Router extends Component {
 	constructor(props) {
 		super(props);
 		this.initialRoute = props.routes[0];
-		this.currentRoute = this.initialRoute;
 		this.navigationBarEx = <NavigationBarEx ref="navigationBar" {...this._buildNavigationBar()}/>;
 	}
 
@@ -112,14 +119,16 @@ export default class Router extends Component {
 		renderTitle: PropTypes.func,
 		routes: PropTypes.array.isRequired,
 		navigationBarStyle: PropTypes.any,
-		configureScene: PropTypes.func
+		configureScene: PropTypes.func,
+		onChange:PropTypes.func
 	}
 
 	static defaultProps = {
 		navigationBarStyle: {},
 		configureScene: ()=> {
 			return Navigator.SceneConfigs.HorizontalSwipeJump;
-		}
+		},
+		onChange:()=>{}
 	};
 
 	_buildNavigationBar() {
@@ -165,25 +174,12 @@ export default class Router extends Component {
 		return (
 			<NavigatorEx initialRoute={this.initialRoute}
 						 routes={this.props.routes}
-						 ref="navigator"
+						 onChange={this.props.onChange.bind(this)}
 						 navigationBar={this.navigationBarEx}
 						 configureScene={(route, routeStack)=> {
 							 return this.props.configureScene(route, routeStack);
 						 }}
 						 renderScene={(route, navigator)=> {
-							 this.currentRoute = route;
-							 /*
-							  if (route.onEnter) {
-							  let needRenderComponent = route.onEnter(route);
-							  if (!needRenderComponent) {
-							  throw  new Error(`${route.path} must return a available component when fire onEnter`);
-							  }
-							  return React.cloneElement(needRenderComponent, {
-							  route: route,
-							  navigator: navigator
-							  });
-							  }
-							  */
 							 return React.cloneElement(route.component, {
 								 route: route,
 								 navigator: navigator

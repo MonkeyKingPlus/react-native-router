@@ -66,6 +66,9 @@ type:function
 default:Navigator.SceneConfigs.HorizontalSwipeJump
 配置页面切换动画，具体参见[React Native Navigator](https://facebook.github.io/react-native/docs/navigator.html#configurescene)
 
+### onChange(optional)
+当router变化时($push,$pop,$replace,$refreshNavBar)会执行onChange
+
 #### routes.item 数据结构如下
 
 * path(required)

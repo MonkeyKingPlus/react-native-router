@@ -126,6 +126,8 @@ this.props.navigator.$push("register",{
 ### $replace(path[,route])
 替换当前的route，第二个参数的作用和$push一样。
 ### $refreshNavBar([route])
+<b style="color:red">PS:此方法不能在Component的生命周期中进行调用,如:componentDidMount,应该在sceneDidFocus中进行调用</b>
+
 更新navigationBar的样式.包括title,renderLeftButton,renderRightButton,hideNavigationBar,目前仅支持这4个参数。
 如:
 ```javascript
@@ -136,31 +138,35 @@ this.props.navigator.$refreshNavBar({
 })
 ```
 
+## Router event
+### sceneDidFocus(route)
+[参见Navigator.onDidFocus](https://facebook.github.io/react-native/docs/navigator.html#ondidfocus)
+
 ## Authentication
 路由配置
 ```javascript
 const routes = [{
 	path: "home",
 	title: "Home",
-	component: <Home></Home>
+	component: Home
 }, {
 	path: "register",
 	title: "Register-Step1",
-	component: <RegisterStep1></RegisterStep1>,
+	component: RegisterStep1,
 	routes: [{
 		path: "step2",
 		title: "Register-Step2",
 		hideNavigationBar: true,
-		component: <RegisterStep2/>
+		component: RegisterStep2
 	}]
 },{
 	path: "login",
 	title: "登录",
-	component: <Login></Login>
+	component: Login
 }, {
 	path: "mine",
 	title: "我的",
-	component: <Mine></Mine>,
+	component: Mine,
 	onEnter: ()=> {
 		if (!isLogin) {
 			return "login";

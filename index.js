@@ -19,9 +19,9 @@ class NavigationBarEx extends NavigationBar {
 		return super.render();
 	}
 
-	refresh(ops = {}) {
+	refresh(ops = {}, route = {}) {
 		let routes = this.props.navState.routeStack;
-		let route = routes[routes.length - 1];
+		// let route = routes[routes.length - 1];
 		routes[routes.length - 1] = Object.assign({}, route, ops);
 		this.forceUpdate();
 	}
@@ -170,19 +170,32 @@ export default class Router extends Component {
 
 	render() {
 		return (
-			<NavigatorEx initialRoute={this.initialRoute}
-						 routes={this.props.routes}
-						 onChange={this.props.onChange.bind(this)}
-						 navigationBar={this.navigationBarEx}
-						 configureScene={(route, routeStack)=> {
-							 return this.props.configureScene(route, routeStack);
-						 }}
-						 renderScene={(route, navigator)=> {
-							 return React.cloneElement(route.component, {
-								 route: route,
-								 navigator: navigator
-							 });
-						 }}></NavigatorEx>
+			<NavigatorEx
+				initialRoute={this.initialRoute}
+				onDidFocus={route=> {
+					if (route.$ref) {
+						if(route.$ref.sceneDidFocus){
+							route.$ref.sceneDidFocus(router);
+						}
+						else if (route.$ref.renderedElement._owner._renderedComponent._instance.sceneDidFocus) {
+							route.$ref.renderedElement._owner._renderedComponent._instance.sceneDidFocus(route);
+						}
+					}
+				}}
+				routes={this.props.routes}
+				onChange={this.props.onChange.bind(this)}
+				navigationBar={this.navigationBarEx}
+				configureScene={(route, routeStack)=> {
+					return this.props.configureScene(route, routeStack);
+				}}
+				renderScene={(route, navigator)=> {
+					return <route.component
+						ref={ref=> {
+							route.$ref = ref;
+						}}
+						navigator={navigator}
+						route={route}/>
+				}}></NavigatorEx>
 		);
 	}
 }

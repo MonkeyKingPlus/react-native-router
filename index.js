@@ -19,9 +19,9 @@ class NavigationBarEx extends NavigationBar {
 		return super.render();
 	}
 
-	refresh(ops = {}, route = {}) {
+	refresh(ops = {}) {
 		let routes = this.props.navState.routeStack;
-		// let route = routes[routes.length - 1];
+		let route = routes[routes.length - 1];
 		routes[routes.length - 1] = Object.assign({}, route, ops);
 		this.forceUpdate();
 	}

@@ -174,10 +174,14 @@ export default class Router extends Component {
 				initialRoute={this.initialRoute}
 				onDidFocus={route=> {
 					if (route.$ref) {
-						if(route.$ref.sceneDidFocus){
+						if (route.$ref.sceneDidFocus) {
 							route.$ref.sceneDidFocus(router);
 						}
-						else if (route.$ref.renderedElement._owner._renderedComponent._instance.sceneDidFocus) {
+						else if (route.$ref.renderedElement
+							&& route.$ref.renderedElement._owner
+							&& route.$ref.renderedElement._owner._renderedComponent
+							&& route.$ref.renderedElement._owner._renderedComponent._instance
+							&& route.$ref.renderedElement._owner._renderedComponent._instance.sceneDidFocus) {
 							route.$ref.renderedElement._owner._renderedComponent._instance.sceneDidFocus(route);
 						}
 					}

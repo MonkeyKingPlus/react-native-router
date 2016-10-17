@@ -36,8 +36,8 @@ class NavigatorEx extends Navigator {
 		return null;
 	}
 
-	static propTypes={
-		onChange:PropTypes.func
+	static propTypes = {
+		onChange: PropTypes.func
 	}
 
 	_findRouteByPath(path) {
@@ -80,12 +80,12 @@ class NavigatorEx extends Navigator {
 				}
 			}
 		}
-		this.props.onChange("$push",route,path);
+		this.props.onChange("$push", route, path);
 		this.push(route);
 	}
 
 	$pop() {
-		this.props.onChange("$pop",this.currentRoute);
+		this.props.onChange("$pop", this.currentRoute);
 		this.pop();
 	}
 
@@ -94,13 +94,13 @@ class NavigatorEx extends Navigator {
 			...this._findRouteByPath(path),
 			...ops
 		};
-		this.props.onChange("$replace",route,path);
+		this.props.onChange("$replace", route, path);
 		this.replace(route);
 	}
 
 	$refreshNavBar(ops = {}) {
 		setTimeout(()=> {
-			this.props.onChange("$refreshNavBar",ops);
+			this.props.onChange("$refreshNavBar", ops);
 			this._navBar.refresh(ops);
 		}, 128);
 	}
@@ -120,7 +120,7 @@ export default class Router extends Component {
 		routes: PropTypes.array.isRequired,
 		navigationBarStyle: PropTypes.any,
 		configureScene: PropTypes.func,
-		onChange:PropTypes.func
+		onChange: PropTypes.func
 	}
 
 	static defaultProps = {
@@ -128,7 +128,8 @@ export default class Router extends Component {
 		configureScene: ()=> {
 			return Navigator.SceneConfigs.HorizontalSwipeJump;
 		},
-		onChange:()=>{}
+		onChange: ()=> {
+		}
 	};
 
 	_buildNavigationBar() {
@@ -138,16 +139,13 @@ export default class Router extends Component {
 		let navigationBarProps = {
 			routeMapper: {
 				LeftButton: (route, navigator, index, navState) => {
-					if (index > 0) {
-						if (route.renderLeftButton) {
-							return route.renderLeftButton(route, navigator, index, navState);
-						}
-						if (defaultRenderLeftButton) {
-							return defaultRenderLeftButton(route, navigator, index, navState);
-						}
-						console.warn("Router.renderLeftButton is missed.");
+					if (route.renderLeftButton) {
+						return route.renderLeftButton(route, navigator, index, navState);
 					}
-					return null;
+					if (defaultRenderLeftButton) {
+						return defaultRenderLeftButton(route, navigator, index, navState);
+					}
+					console.warn("Router.renderLeftButton is missed.");
 				},
 				RightButton: (route, navigator, index, navState) => {
 					if (route.renderRightButton) {

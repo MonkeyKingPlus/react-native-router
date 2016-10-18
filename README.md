@@ -126,7 +126,7 @@ this.props.navigator.$push("register",{
 ### $replace(path[,route])
 替换当前的route，第二个参数的作用和$push一样。
 ### $refreshNavBar([route])
-<b style="color:red">PS:此方法不能在Component的生命周期中进行调用,如:componentDidMount,应该在sceneDidFocus中进行调用</b>
+PS:此方法不能在Component的生命周期中进行调用,如:componentDidMount,应该在sceneDidFocus中进行调用
 
 更新navigationBar的样式.包括title,renderLeftButton,renderRightButton,hideNavigationBar,目前仅支持这4个参数。
 如:

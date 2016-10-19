@@ -3,7 +3,15 @@ import {Navigator} from "react-native";
 
 let {NavigationBar}=Navigator;
 
+/**
+ * NavigationBar extension
+ * @class
+ * @classdesc 增加了refresh方法,可以对navigation bar 进行更细粒度的操作
+ * */
 class NavigationBarEx extends NavigationBar {
+	/**
+	 * current route is readonly
+	 * */
 	get currentRoute() {
 		let routes = this.props.navState.routeStack;
 		if (routes.length && routes.length > 0) {
@@ -19,6 +27,15 @@ class NavigationBarEx extends NavigationBar {
 		return super.render();
 	}
 
+	/**
+	 * force refresh navigation bar with ops
+	 * @param {object} [ops={}] - the navigation bar ops
+	 * @param {string} [ops.title] - title
+	 * @param {function} [ops.renderLeftButton] - render left button or back button
+	 * @param {function} [ops.renderRightButton] - render right button
+	 * @param {function} [ops.renderTitle] - render title
+	 * @param {boolean} [ops.hideNavigationBar=false] - it is show navigation bar by ops.hideNavigationBar
+	 * */
 	refresh(ops = {}) {
 		let routes = this.props.navState.routeStack;
 		let route = routes[routes.length - 1];
@@ -27,7 +44,14 @@ class NavigationBarEx extends NavigationBar {
 	}
 }
 
+/**
+ * Navigator extension
+ * @class
+ * */
 class NavigatorEx extends Navigator {
+	/**
+	 * current route , readonly
+	 * */
 	get currentRoute() {
 		let routes = this.state.routeStack;
 		if (routes.length && routes.length > 0) {
@@ -40,6 +64,11 @@ class NavigatorEx extends Navigator {
 		onChange: PropTypes.func
 	}
 
+	/**
+	 * find target route by path
+	 * @param {string} path - path like path1/path2
+	 * @returns {object} route
+	 * */
 	_findRouteByPath(path) {
 		let routes = this.props.routes;
 		let pathNames = path.split("/");
@@ -64,6 +93,17 @@ class NavigatorEx extends Navigator {
 		return route;
 	}
 
+	/**
+	 * push route to router stack
+	 * @param {string} path - path
+	 * @param {object} ops - ops apply the route which find by path
+	 * @param {string} [ops.title] - title
+	 * @param {function} [ops.renderLeftButton] - render left button or back button
+	 * @param {function} [ops.renderRightButton] - render right button
+	 * @param {function} [ops.renderTitle] - render title
+	 * @param {boolean} [ops.hideNavigationBar=false] - it is show navigation bar by ops.hideNavigationBar
+	 * @param {function} [ops.onEnter]
+	 * */
 	$push(path, ops = {}) {
 		let route = {
 			...this._findRouteByPath(path),
@@ -84,11 +124,25 @@ class NavigatorEx extends Navigator {
 		this.push(route);
 	}
 
+	/**
+	 * pop route from router stack
+	 * */
 	$pop() {
 		this.props.onChange("$pop", this.currentRoute);
 		this.pop();
 	}
 
+	/**
+	 * replace current route with the path
+	 * @param {string} path - path
+	 * @param {object} ops - ops apply the route which find by path
+	 * @param {string} [ops.title] - title
+	 * @param {function} [ops.renderLeftButton] - render left button or back button
+	 * @param {function} [ops.renderRightButton] - render right button
+	 * @param {function} [ops.renderTitle] - render title
+	 * @param {boolean} [ops.hideNavigationBar=false] - it is show navigation bar by ops.hideNavigationBar
+	 * @param {function} [ops.onEnter]
+	 * */
 	$replace(path, ops = {}) {
 		let route = {
 			...this._findRouteByPath(path),
@@ -98,6 +152,15 @@ class NavigatorEx extends Navigator {
 		this.replace(route);
 	}
 
+	/**
+	 * refresh navigation bar with ops
+	 * @param {object} [ops={}] - the navigation bar ops
+	 * @param {string} [ops.title] - title
+	 * @param {function} [ops.renderLeftButton] - render left button or back button
+	 * @param {function} [ops.renderRightButton] - render right button
+	 * @param {function} [ops.renderTitle] - render title
+	 * @param {boolean} [ops.hideNavigationBar=false] - it is show navigation bar by ops.hideNavigationBar
+	 * */
 	$refreshNavBar(ops = {}) {
 		setTimeout(()=> {
 			this.props.onChange("$refreshNavBar", ops);
@@ -107,6 +170,10 @@ class NavigatorEx extends Navigator {
 
 }
 
+/**
+ * Router
+ * @class
+ * */
 export default class Router extends Component {
 	constructor(props) {
 		super(props);

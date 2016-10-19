@@ -181,9 +181,11 @@ this.props.navigator.$replace(this.props.route.$previousPath);
 
 # How to use Router with Redux
 ```javascript
+import Router from "react-native-router";
+import {connect, Provider} from "react-redux";
+
 const RouterWithRedux = connect()(Router);
-```
-```javascript
+
 <Provider store={store}>
         <RouterWithRedux
             navigationBarStyle={navigationStyles.navigationBar}

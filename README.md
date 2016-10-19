@@ -179,4 +179,37 @@ const routes = [{
 this.props.navigator.$replace(this.props.route.$previousPath);
 ```
 
+# How to use Router with Redux
+```javascript
+const RouterWithRedux = connect()(Router);
+```
+```javascript
+<Provider store={store}>
+        <RouterWithRedux
+            navigationBarStyle={navigationStyles.navigationBar}
+            renderTitle={(route)=> {
+                return (
+                    <View style={[navigationStyles.base]}>
+                        <Text style={[navigationStyles.title]}>{route.title}</Text>
+                    </View>
+                );
+            }}
+            renderLeftButton={(route, navigator, index)=> {
+                if (index > 0) {
+                    return (
+                        <TouchableHighlight
+                            style={[navigationStyles.base, navigationStyles.leftButton]}
+                            onPress={event=> {
+                                navigator.$pop();
+                            }}>
+                            <Image source={require("./themes/assets/icons/back-icon.png")}/>
+                        </TouchableHighlight >
+                    );
+                }
+                return null;
+            }}
+            routes={routes}></RouterWithRedux>
+</Provider>
+```
+
 

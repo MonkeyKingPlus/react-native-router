@@ -242,7 +242,7 @@ export default class Router extends Component {
 				onDidFocus={route=> {
 					if (route.$ref) {
 						if (route.$ref.sceneDidFocus) {
-							route.$ref.sceneDidFocus(router);
+							route.$ref.sceneDidFocus(route);
 						}
 						else if (route.$ref.renderedElement
 							&& route.$ref.renderedElement._owner

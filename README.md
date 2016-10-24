@@ -128,7 +128,7 @@ this.props.navigator.$push("register",{
 ### $refreshNavBar([route])
 PS:此方法不能在Component的生命周期中进行调用,如:componentDidMount,应该在sceneDidFocus中进行调用
 
-更新navigationBar的样式.包括title,renderLeftButton,renderRightButton,hideNavigationBar,目前仅支持这4个参数。
+更新navigationBar的样式.包括title,renderLeftButton,renderRightButton,hideNavigationBar,renderTitle,目前仅支持这5个参数。
 如:
 ```javascript
 this.props.navigator.$refreshNavBar({

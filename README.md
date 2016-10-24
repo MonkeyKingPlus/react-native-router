@@ -1,5 +1,6 @@
 # react-native-router
-react-native-router 是对navigator的一个封装，以配置的方式管理所有的页面及其他功能。
+react-native-router 是对navigator的一个封装，以配置的方式管理所有的页面及其他功能。<br/>
+<img src="https://raw.githubusercontent.com/MonkeyKingPlus/react-native-router/master/test/demo/react-native-router-demo.gif"/>
 
 # Install
 ```bash

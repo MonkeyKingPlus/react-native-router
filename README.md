@@ -3,7 +3,7 @@ react-native-router 是对navigator的一个封装，以配置的方式管理所
 
 # Install
 ```bash
-npm install https://github.com/MonkeyKingPlus/react-native-router.git --save
+npm install mkp-react-native-router --save
 ```
 
 # Example

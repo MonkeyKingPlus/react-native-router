@@ -142,6 +142,13 @@ this.props.navigator.$refreshNavBar({
 ## Router event
 ### sceneDidFocus(route)
 [参见Navigator.onDidFocus](https://facebook.github.io/react-native/docs/navigator.html#ondidfocus)
+```javascript
+class TestComponent extends Component{
+	sceneDidFocus(){
+		//do something
+	}
+}
+```
 
 ## Authentication
 路由配置

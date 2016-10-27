@@ -60,7 +60,7 @@ NavigationBar的样式
 
 ### routes(required)
 type:array
-路由配置
+路由配置,数组中第一个route将是启动的route.
 
 ### configureScene(optional)
 type:function
@@ -103,7 +103,9 @@ path对应的页面
 * onEnter(optional) type:function parameter(route) 在route push时调用。如果要拦截当前的path，可以返回一个新的path，
 也可以什么都不返回，对于认证非常有用。
 
-PS：如果在onEnter中返回了一个新的有效的path，在route中将可以访问之前的route和path，分别对应$previousRoute,$previousPath
+PS:如果在onEnter中返回了一个新的有效的path，在route中将可以访问之前的route和path，分别对应$previousRoute,$previousPath
+
+PS:启动的路由或者是初始路由将不会执行此方法
 
 ## navigator methods
 ### $push(path[,route])
@@ -149,9 +151,19 @@ class TestComponent extends Component{
 	}
 }
 ```
+### sceneWillFocus(route)
+[参见Navigator.onWillFocus](https://facebook.github.io/react-native/docs/navigator.html#onwillfocus)
+```javascript
+class TestComponent extends Component{
+	sceneWillFocus(){
+		//do something
+	}
+}
+```
 
 ## Authentication
-路由配置
+路由认证
+### Example
 ```javascript
 const routes = [{
 	path: "home",
@@ -189,6 +201,19 @@ this.props.navigator.$replace(this.props.route.$previousPath);
 或者
 ```javascript
 this.props.navigator.$pop();
+```
+### 启动页实现认证
+在启动页中实现sceneDidFocus
+```javascript
+class Index extends Component{
+	sceneDidFocus(){
+		this.props.navigator.$replace("login");
+	}
+}
+```
+登录成功后
+```javascript
+this.props.navigator.$replace("index");
 ```
 
 # How to use Router with Redux

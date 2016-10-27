@@ -36,7 +36,9 @@ class Home extends Component {
 			count: 0
 		};
 	}
-
+	sceneDidFocus(route){
+		console.log("home did focus:",route)
+	}
 	render() {
 		return (
 			<View
@@ -175,7 +177,10 @@ class Login extends Component {
 const routes = [{
 	path: "home",
 	title: "Home",
-	component: Home
+	component: Home,
+	onEnter:()=>{
+		console.log("enter home");
+	}
 }, {
 	path: "register",
 	title: "Register-Step1",
@@ -184,7 +189,10 @@ const routes = [{
 		path: "step2",
 		title: "Register-Step2",
 		component: RegisterStep2
-	}]
+	}],
+	onEnter:()=>{
+		console.log("enter register");
+	}
 }, {
 	path: "login",
 	title: "登录",

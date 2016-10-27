@@ -186,6 +186,10 @@ const routes = [{
 ```javascript
 this.props.navigator.$replace(this.props.route.$previousPath);
 ```
+或者
+```javascript
+this.props.navigator.$pop();
+```
 
 # How to use Router with Redux
 ```javascript

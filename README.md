@@ -7,7 +7,7 @@ react-native-router 是对navigator的一个封装，以配置的方式管理所
 npm install mkp-react-native-router --save
 ```
 
-# Example
+# Quick Start
 ```javascript
 <Router ref="router" renderTitle={(route)=> {
     return <Text style={{color: "white"}}>{route.title}</Text>;
@@ -24,16 +24,16 @@ npm install mkp-react-native-router --save
         routes={[{
             path: "home",
             title: "Home",
-            component: <Home></Home>
+            component: Home
         }, {
             path: "register",
             title: "Register-Step1",
-            component: <RegisterStep1></RegisterStep1>,
+            component: RegisterStep1,
             routes: [{
                 path: "step2",
                 title: "Register-Step2",
                 hideNavigationBar: true,
-                component: <RegisterStep2/>
+                component: RegisterStep2
             }]
         }]}></Router>
 ```

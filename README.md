@@ -1,5 +1,5 @@
 # react-native-router
-react-native-router 是对navigator的一个封装，以配置的方式管理所有的页面及其他功能。<br/>
+This module is Navigator extension.you can manage all of route with configuration.<br/>
 <img src="https://raw.githubusercontent.com/MonkeyKingPlus/react-native-router/master/test/demo/react-native-router-demo.gif"/>
 
 # Install
@@ -9,9 +9,10 @@ npm install mkp-react-native-router --save
 
 # Quick Start
 ```javascript
-<Router ref="router" renderTitle={(route)=> {
-    return <Text style={{color: "white"}}>{route.title}</Text>;
-}}
+<Router ref="router" 
+        renderTitle={(route)=> {
+            return <Text style={{color: "white"}}>{route.title}</Text>;
+        }}  
         renderLeftButton={(route, navigator, index)=> {
             if (index > 0) {
                 return <Text style={{color: "white"}} onPress={event=> {
@@ -35,42 +36,32 @@ npm install mkp-react-native-router --save
                 hideNavigationBar: true,
                 component: RegisterStep2
             }]
-        }]}></Router>
+        }]}>
+</Router>
 ```
 
-## Router Property
+# Router Props
 
-### renderTitle(optional)
-type:function
-parameter:(route,navigator,index,navState)
-default:
+## renderTitle(route,navigator,index,navState)
+Set navigation title style.<br/>
+the default value will return a text node:
 ```javascript
 <Text>{route.title}</Text>
 ```
-设置NavigationBar中title的样式，必须返回一个component。
 
-### renderLeftButton(required)
+## renderLeftButton(required)
 type:function
 parameter:(route,navigator,index,navState)
 设置back键，默认返回null（即隐藏back键）
 
-### navigationBarStyle(optional)
+## navigationBarStyle(optional)
 type:object
 NavigationBar的样式
 
-### routes(required)
+## routes(required)
 type:array
 路由配置,数组中第一个route将是启动的route.
-
-### configureScene(optional)
-type:function
-default:Navigator.SceneConfigs.HorizontalSwipeJump
-配置页面切换动画，具体参见[React Native Navigator](https://facebook.github.io/react-native/docs/navigator.html#configurescene)
-
-### onChange(optional)
-当router变化时($push,$pop,$replace,$refreshNavBar)会执行onChange
-
-#### routes.item 数据结构如下
+### routes.item 数据结构如下
 
 * path(required)
 type:string
@@ -107,8 +98,16 @@ PS:如果在onEnter中返回了一个新的有效的path，在route中将可以�
 
 PS:启动的路由或者是初始路由将不会执行此方法
 
-## navigator methods
-### $push(path[,route])
+## configureScene(optional)
+type:function
+default:Navigator.SceneConfigs.HorizontalSwipeJump
+配置页面切换动画，具体参见[React Native Navigator](https://facebook.github.io/react-native/docs/navigator.html#configurescene)
+
+## onChange(optional)
+当router变化时($push,$pop,$replace,$refreshNavBar)会执行onChange
+
+# navigator methods
+## $push(path[,route])
 跳转到下一个route，如：
 ```javascript
 this.props.navigator.$push("register")
@@ -124,11 +123,11 @@ this.props.navigator.$push("register",{
 });
 ```
 页面间传递参数这个方法同样适用。
-### $pop()
+## $pop()
 返回上一个route
-### $replace(path[,route])
+## $replace(path[,route])
 替换当前的route，第二个参数的作用和$push一样。
-### $refreshNavBar([route])
+## $refreshNavBar([route])
 PS:此方法不能在Component的生命周期中进行调用,如:componentDidMount,应该在sceneDidFocus中进行调用
 
 更新navigationBar的样式.包括title,renderLeftButton,renderRightButton,hideNavigationBar,renderTitle,目前仅支持这5个参数。
@@ -141,8 +140,8 @@ this.props.navigator.$refreshNavBar({
 })
 ```
 
-## Router event
-### sceneDidFocus(route)
+# Router event
+## sceneDidFocus(route)
 [参见Navigator.onDidFocus](https://facebook.github.io/react-native/docs/navigator.html#ondidfocus)
 ```javascript
 class TestComponent extends Component{
@@ -151,7 +150,7 @@ class TestComponent extends Component{
 	}
 }
 ```
-### sceneWillFocus(route)
+## sceneWillFocus(route)
 [参见Navigator.onWillFocus](https://facebook.github.io/react-native/docs/navigator.html#onwillfocus)
 ```javascript
 class TestComponent extends Component{
@@ -161,9 +160,9 @@ class TestComponent extends Component{
 }
 ```
 
-## Authentication
+# Authentication
 路由认证
-### Example
+## Example
 ```javascript
 const routes = [{
 	path: "home",
@@ -202,7 +201,7 @@ this.props.navigator.$replace(this.props.route.$previousPath);
 ```javascript
 this.props.navigator.$pop();
 ```
-### 启动页实现认证
+## 启动页实现认证
 在启动页中实现sceneDidFocus
 ```javascript
 class Index extends Component{

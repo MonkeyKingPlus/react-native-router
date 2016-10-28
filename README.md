@@ -101,9 +101,9 @@ this.props.navigator.$push("register",{
 ```
 ## $pop()
 back to previous route.
-## $replace(path[,route])
+## $replace(path:string[,route:route])
 replace current route with path. the second parameter is the same as $push
-## $refreshNavBar([route])
+## $refreshNavBar([route:route])
 PS:此方法不能在Component的生命周期中进行调用,如:componentDidMount,应该在sceneDidFocus中进行调用
 
 更新navigationBar的样式.包括title,renderLeftButton,renderRightButton,hideNavigationBar,renderTitle,目前仅支持这5个参数。

@@ -118,7 +118,7 @@ this.props.navigator.$refreshNavBar({
     renderRightButton:()=>{}
 })
 ```
-NOTE:this method must't be calling in component's lifecycle, such as componentDidMount,only calling in <a href="#sceneDidFocus">sceneDidFocus</a>sceneDidFocus.
+NOTE:this method must't be calling in component's lifecycle, such as componentDidMount,only calling in <a href="#scenedidfocusroute">sceneDidFocus</a>sceneDidFocus.
 
 # Router event
 ## sceneDidFocus(route)

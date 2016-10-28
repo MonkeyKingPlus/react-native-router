@@ -42,91 +42,67 @@ npm install mkp-react-native-router --save
 
 # Router Props
 
-## renderTitle(route,navigator,index,navState)
-Set navigation title style.<br/>
+## renderTitle(route:route,navigator:NavigatorEx,index:number,navState:route[])
+Set title for navigation.<br/>
 the default value will return a text node:
 ```javascript
 <Text>{route.title}</Text>
 ```
 
-## renderLeftButton(required)
-type:function
-parameter:(route,navigator,index,navState)
-设置back键，默认返回null（即隐藏back键）
+## renderLeftButton(route:route,navigator:NavigatorEx,index:number,navState:route[])
+Set back button or left button for navigation, null as default value.
 
-## navigationBarStyle(optional)
-type:object
-NavigationBar的样式
+## navigationBarStyle
+Set navigation style
 
-## routes(required)
-type:array
-路由配置,数组中第一个route将是启动的route.
-### routes.item 数据结构如下
+## routes
+The first route as initial route
+### type route
 
-* path(required)
-type:string
-路由名称
-* title(required)
-type:string
-NavigationBar的标题
-* renderLeftButton(optional)
-type:function
-parameter:(route,navigator,index,navState)
-设置back键，如果提供了此方法将重写Router.renderLeftButton
-* renderRightButton(optional)
-type:function
-parameter:(route,navigator,index,navState)
-设置导航右边的按钮
-* renderTitle(optional)
-type:function
-parameter:(route,navigator,index,navState)
-设置NavigationBar中的title，如果提供了此方法将重写Router.renderTitle
-* hideNavigationBar(optional)
-type:boolean
-default:false
-是否隐藏NavigationBar
-* routes(optional)
-type:array
-配置子路由，array中item的类型和routes.item一样
-* component(required)
-type:component
-path对应的页面
-* onEnter(optional) type:function parameter(route) 在route push时调用。如果要拦截当前的path，可以返回一个新的path，
-也可以什么都不返回，对于认证非常有用。
+* path:string - route path that is required.
+* title:string - navigation title
+* renderLeftButton(route:route,navigator:NavigatorEx,index:number,navState:route[]):function - set left button for navigation. if it is provided , the Router.renderLeftButton will be ignore.
+* renderRightButton(route:route,navigator:NavigatorEx,index:number,navState:route[]):function - set right button for navigation.
+* renderTitle(route:route,navigator:NavigatorEx,index:number,navState:route[]):function - if it is provided , the Router.renderTitle will be ignored.
+* hideNavigationBar:boolean [hideNavigationBar=false] - whether hide navigation.
+* routes:route[] - this is required.
+* component:Component
+* onEnter(route:route):function - invoke when navigator.$push,you can return a available path to redirect or nothing.
 
-PS:如果在onEnter中返回了一个新的有效的path，在route中将可以访问之前的route和path，分别对应$previousRoute,$previousPath
+PS:if you return a available path in here , you can access route.$previousRoute and route.$previousPath in new path.
 
-PS:启动的路由或者是初始路由将不会执行此方法
+PS:don't be invoked when bootstrap app from initial route.
 
-## configureScene(optional)
-type:function
-default:Navigator.SceneConfigs.HorizontalSwipeJump
-配置页面切换动画，具体参见[React Native Navigator](https://facebook.github.io/react-native/docs/navigator.html#configurescene)
+## configureScene()
+configure page transition, you can refer to [React Native Navigator](https://facebook.github.io/react-native/docs/navigator.html#configurescene)<br/>
+the default value is Navigator.SceneConfigs.HorizontalSwipeJump.
 
-## onChange(optional)
-当router变化时($push,$pop,$replace,$refreshNavBar)会执行onChange
+## onChange(type:string,route:object,path:string)
+Invoke when navigator $push,$pop,$replace,$refreshNavBar
 
 # navigator methods
-## $push(path[,route])
-跳转到下一个route，如：
+## $push(path:string[,route:route])
+router will push to target path.the parameter route will override route which find by path.
 ```javascript
+//go to 'register'
 this.props.navigator.$push("register")
-```
-如果是嵌套的route，path的结构类似url，如：
-```javascript
+//go to 'register/register-step2' 
 this.props.navigator.$push("register/register-step2");
-```
-在Router.routes中已经对每个route进行了配置，如果在$push之前想重写已经配置的route属性，可以通过第二个参数进行修改，如：
-```javascript
+//override route which find by path with the second parameter
 this.props.navigator.$push("register",{
 	title:"Register"
 });
 ```
-页面间传递参数这个方法同样适用。
+in addition you can pass props through the second parameter.
+```javascript
+this.props.navigator.$push("register",{
+	tel:"13100000000"
+})
+```
 ## $pop()
-返回上一个route
+back to previous route.
 ## $replace(path[,route])
-替换当前的route，第二个参数的作用和$push一样。
+replace current route with path. the second parameter is the same as $push
 ## $refreshNavBar([route])
 PS:此方法不能在Component的生命周期中进行调用,如:componentDidMount,应该在sceneDidFocus中进行调用
 

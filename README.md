@@ -135,7 +135,6 @@ class TestComponent extends Component{
 ```
 
 # Authentication
-路由认证
 ## Example
 ```javascript
 const routes = [{
@@ -154,11 +153,11 @@ const routes = [{
 	}]
 },{
 	path: "login",
-	title: "登录",
+	title: "Login",
 	component: Login
 }, {
 	path: "mine",
-	title: "我的",
+	title: "Mine",
 	component: Mine,
 	onEnter: ()=> {
 		if (!isLogin) {
@@ -167,26 +166,13 @@ const routes = [{
 	}
 }];
 ```
-登录成功后
+after login success.
 ```javascript
 this.props.navigator.$replace(this.props.route.$previousPath);
 ```
-或者
+or
 ```javascript
 this.props.navigator.$pop();
-```
-## 启动页实现认证
-在启动页中实现sceneDidFocus
-```javascript
-class Index extends Component{
-	sceneDidFocus(){
-		this.props.navigator.$replace("login");
-	}
-}
-```
-登录成功后
-```javascript
-this.props.navigator.$replace("index");
 ```
 
 # How to use Router with Redux

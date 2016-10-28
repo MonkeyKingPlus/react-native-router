@@ -59,19 +59,25 @@ Set navigation style
 The first route as initial route
 ### type route
 
-* path:string - route path that is required.
-* title:string - navigation title
-* renderLeftButton(route:route,navigator:NavigatorEx,index:number,navState:route[]):function - set left button for navigation. if it is provided , the Router.renderLeftButton will be ignore.
-* renderRightButton(route:route,navigator:NavigatorEx,index:number,navState:route[]):function - set right button for navigation.
-* renderTitle(route:route,navigator:NavigatorEx,index:number,navState:route[]):function - if it is provided , the Router.renderTitle will be ignored.
-* hideNavigationBar:boolean [hideNavigationBar=false] - whether hide navigation.
-* routes:route[] - this is required.
+* path:string<br/>
+route path that is required.
+* title:string<br/>
+navigation title
+* renderLeftButton(route:route,navigator:NavigatorEx,index:number,navState:route[]):function<br/>
+set left button for navigation. if it is provided , the Router.renderLeftButton will be ignore.
+* renderRightButton(route:route,navigator:NavigatorEx,index:number,navState:route[]):function<br/>
+set right button for navigation.
+* renderTitle(route:route,navigator:NavigatorEx,index:number,navState:route[]):function<br/>
+if it is provided , the Router.renderTitle will be ignored.
+* hideNavigationBar:boolean [hideNavigationBar=false]<br/>
+whether hide navigation.
+* routes:route[]<br/>
+this is required.
 * component:Component
-* onEnter(route:route):function - invoke when navigator.$push,you can return a available path to redirect or nothing.
-
-NOTE1:if you return a available path in here , you can access route.$previousRoute and route.$previousPath in new path.
-
-NOTE2:don't be invoked when bootstrap app from initial route.
+* onEnter(route:route):function<br/>
+invoke when navigator.$push,you can return a available path to redirect or nothing.<br/>
+NOTE1:if you return a available path in here , you can access route.$previousRoute and route.$previousPath in new path.<br/>
+NOTE2:don't be invoked when start app from initial route.
 
 ## configureScene()
 configure page transition, you can refer to [React Native Navigator](https://facebook.github.io/react-native/docs/navigator.html#configurescene)<br/>
@@ -112,7 +118,7 @@ this.props.navigator.$refreshNavBar({
     renderRightButton:()=>{}
 })
 ```
-NOTE:this method must't be calling in component's lifecycle, such as componentDidMount,only calling in sceneDidFocus.
+NOTE:this method must't be calling in component's lifecycle, such as componentDidMount,only calling in <a href="#sceneDidFocus">sceneDidFocus</a>sceneDidFocus.
 
 # Router event
 ## sceneDidFocus(route)

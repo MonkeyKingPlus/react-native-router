@@ -116,7 +116,7 @@ NOTE:this method must't be calling in component's lifecycle, such as componentDi
 
 # Router event
 ## sceneDidFocus(route)
-[参见Navigator.onDidFocus](https://facebook.github.io/react-native/docs/navigator.html#ondidfocus)
+Refer to [Navigator.onDidFocus](https://facebook.github.io/react-native/docs/navigator.html#ondidfocus)
 ```javascript
 class TestComponent extends Component{
 	sceneDidFocus(){
@@ -125,7 +125,7 @@ class TestComponent extends Component{
 }
 ```
 ## sceneWillFocus(route)
-[参见Navigator.onWillFocus](https://facebook.github.io/react-native/docs/navigator.html#onwillfocus)
+Refer to [Navigator.onWillFocus](https://facebook.github.io/react-native/docs/navigator.html#onwillfocus)
 ```javascript
 class TestComponent extends Component{
 	sceneWillFocus(){
@@ -177,7 +177,7 @@ this.props.navigator.$pop();
 
 # How to use Router with Redux
 ```javascript
-import Router from "react-native-router";
+import Router from "mkp-react-native-router";
 import {connect, Provider} from "react-redux";
 
 const RouterWithRedux = connect()(Router);

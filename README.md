@@ -69,9 +69,9 @@ The first route as initial route
 * component:Component
 * onEnter(route:route):function - invoke when navigator.$push,you can return a available path to redirect or nothing.
 
-PS:if you return a available path in here , you can access route.$previousRoute and route.$previousPath in new path.
+NOTE1:if you return a available path in here , you can access route.$previousRoute and route.$previousPath in new path.
 
-PS:don't be invoked when bootstrap app from initial route.
+NOTE2:don't be invoked when bootstrap app from initial route.
 
 ## configureScene()
 configure page transition, you can refer to [React Native Navigator](https://facebook.github.io/react-native/docs/navigator.html#configurescene)<br/>
@@ -104,10 +104,7 @@ back to previous route.
 ## $replace(path:string[,route:route])
 replace current route with path. the second parameter is the same as $push
 ## $refreshNavBar([route:route])
-PS:此方法不能在Component的生命周期中进行调用,如:componentDidMount,应该在sceneDidFocus中进行调用
-
-更新navigationBar的样式.包括title,renderLeftButton,renderRightButton,hideNavigationBar,renderTitle,目前仅支持这5个参数。
-如:
+Refresh navigation's style.
 ```javascript
 this.props.navigator.$refreshNavBar({
     title:"test",
@@ -115,6 +112,7 @@ this.props.navigator.$refreshNavBar({
     renderRightButton:()=>{}
 })
 ```
+NOTE:this method must't be calling in component's lifecycle, such as componentDidMount,only calling in sceneDidFocus.
 
 # Router event
 ## sceneDidFocus(route)

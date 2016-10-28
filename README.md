@@ -77,7 +77,7 @@ PS:don't be invoked when bootstrap app from initial route.
 configure page transition, you can refer to [React Native Navigator](https://facebook.github.io/react-native/docs/navigator.html#configurescene)<br/>
 the default value is Navigator.SceneConfigs.HorizontalSwipeJump.
 
-## onChange(type:string,route:object,path:string)
+## onChange(type:string,route:route,path:string)
 Invoke when navigator $push,$pop,$replace,$refreshNavBar
 
 # navigator methods

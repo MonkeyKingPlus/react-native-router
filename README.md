@@ -6,6 +6,8 @@ This module is Navigator extension.you can manage all of route with configuratio
 ```bash
 npm install mkp-react-native-router --save
 ```
+# Support
+IOS/Android
 
 # Quick Start
 ```javascript

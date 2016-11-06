@@ -3,6 +3,9 @@ import {Navigator} from "react-native";
 
 let {NavigationBar}=Navigator;
 
+export const SCENE_DID_FOCUS="SCENE_DID_FOCUS";
+export const SCENE_WILL_FOCUS="SCENE_WILL_FOCUS";
+
 /**
  * NavigationBar extension
  * @class
@@ -256,12 +259,24 @@ export default class Router extends Component {
 			<NavigatorEx
 				initialRoute={this.initialRoute}
 				onDidFocus={route=> {
+					if(this.props.dispatch){
+						this.props.dispatch({
+							type:SCENE_DID_FOCUS,
+							route
+						})
+					}
 					let callback=this._findEvenFromRoute("sceneDidFocus",route);
 					if(callback){
 						callback(route);
 					}
 				}}
 				onWillFocus={route=> {
+					if(this.props.dispatch){
+						this.props.dispatch({
+							type:SCENE_WILL_FOCUS,
+							route
+						})
+					}
 					let callback=this._findEvenFromRoute("sceneWillFocus",route);
 					if(callback){
 						callback(route);

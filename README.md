@@ -219,14 +219,14 @@ const RouterWithRedux = connect()(Router);
 ```
 you can deal with some action that is 'SCENE_WILL_FOCUS' and 'SCENE_DID_FOCUS' in reducer. example following,
 ```javascript
-import {SCENE_WILL_FOCUS,SCENE_DID_FOCUS} from "mkp-react-native-router";
+import {ActionTypes} from "mkp-react-native-router";
 export function testReducer(state,action){
     switch(action.type){
-        case SCENE_WILL_FOCUS:
+        case ActionTypes.SCENE_WILL_FOCUS:
             //you can access the route from action.route
             //do something
             break;
-        case SCENE_DID_FOCUS:
+        case ActionTypes.SCENE_DID_FOCUS:
             //you can access the route from action.route
             //do something
             break;

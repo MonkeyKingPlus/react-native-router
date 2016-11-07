@@ -1,4 +1,13 @@
-# react-native-router
+# react-native-router 
+
+<!-- badge -->
+[![travis status](https://img.shields.io/travis/MonkeyKingPlus/react-native-router.svg)](https://travis-ci.org/MonkeyKingPlus/react-native-router)
+[![npm version](https://img.shields.io/npm/v/mkp-react-native-router.svg)](https://www.npmjs.com/package/mkp-react-native-router)
+[![npm license](https://img.shields.io/npm/l/mkp-react-native-router.svg)](https://www.npmjs.com/package/mkp-react-native-router)
+[![npm download](https://img.shields.io/npm/dm/mkp-react-native-router.svg)](https://www.npmjs.com/package/mkp-react-native-router)
+[![npm download](https://img.shields.io/npm/dt/mkp-react-native-router.svg)](https://www.npmjs.com/package/mkp-react-native-router)
+<!-- endbadge -->
+
 This module is Navigator extension.you can manage all of route with configuration.<br/>
 <img src="https://raw.githubusercontent.com/MonkeyKingPlus/react-native-router/master/test/demo/react-native-router-demo.gif"/>
 

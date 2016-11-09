@@ -191,6 +191,34 @@ or
 ```javascript
 this.props.navigator.$pop();
 ```
+## Async Authentication
+More time we determine login state with token , but we can't get token value in sync ,
+so we need a page to initial some data , such as token . after we can use these data in sync.
+when you need to restore redux , the step is useful.
+sample code following:
+```javascript
+
+window.appData={
+	token:""
+};
+
+class Init extends Component{
+	
+	componentDidMount(){
+		getToken().then(value=>{
+			if(value){
+			    window.appData.token=value;
+			    this.props.navigator.$replace("home");
+			}
+			else{
+				this.props.navigator.$replace("login");
+			}
+		})
+	}
+	
+}
+```
+you can get current net state or anything data in here except above.
 
 # How to use Router with Redux
 ```javascript

@@ -273,4 +273,41 @@ export function testReducer(state,action){
 }
 ```
 
+# How to deal with hardware back event on android 
+Router provide two property currentRoute and navigator, you can do something through these property. following code:
+```javascript
+class Test extends Component{
+    constructor(props){
+        super(props);
+        BackAndroid.addEventListener("hardwareBackPress",()=>{
+            // if router with redux
+            //let cur=this.refs.router.renderedElement._owner._renderedComponent._instance.currentRoute;
+            //let navigator=this.refs.router.renderedElement._owner._renderedComponent._instance.navigator;
+            //else
+            //let cur=this.refs.router.currentRoute;
+            //let navigator=this.refs.router.navigator;
+            let cur=this.refs.router.renderedElement._owner._renderedComponent._instance.currentRoute;
+            let navigator=this.refs.router.renderedElement._owner._renderedComponent._instance.navigator;
+            if(cur.path==="login" || cur.path==="home"){
+                //exit
+                confirm("确定要关闭应用吗?",ok=>{
+                    if(ok){
+                        BackAndroid.exitApp();
+                    }
+                })
+            }
+            else{
+                navigator.$pop();
+            }
+            return true;
+        });
+    }
+    render(){
+        return (
+            <Router ref="router"></Router>
+        )
+    }
+}
+```
+
 

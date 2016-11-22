@@ -1,6 +1,11 @@
 import React, {Component} from "react";
 import Router from "./router";
-import {View, Text, StyleSheet} from "react-native";
+import {
+	View, Text, StyleSheet,
+	Dimensions
+} from "react-native";
+
+let size = Dimensions.get("window");
 
 const styles = StyleSheet.create({
 	container: {
@@ -36,9 +41,11 @@ class Home extends Component {
 			count: 0
 		};
 	}
-	sceneDidFocus(route){
-		console.log("home did focus:",route)
+
+	sceneDidFocus(route) {
+		console.log("home did focus:", route)
 	}
+
 	render() {
 		return (
 			<View
@@ -55,14 +62,14 @@ class Home extends Component {
 				}}>hide navigation bar</Text>
 				<Text style={styles.button} onPress={event=> {
 					/*
+					 this.props.navigator.$refreshNavBar({
+					 title: "New Title"
+					 });
+					 */
 					this.props.navigator.$refreshNavBar({
-						title: "New Title"
-					});
-					*/
-					this.props.navigator.$refreshNavBar({
-						title:"New Title",
-						renderTitle:(route)=>{
-							return <Text style={{color:"red"}}>{route.title}</Text>
+						title: "New Title",
+						renderTitle: (route)=> {
+							return <Text style={{color: "red"}}>{route.title}</Text>
 						}
 					});
 				}}>set title</Text>
@@ -103,17 +110,17 @@ class RegisterStep1 extends Component {
 				<Text
 					style={styles.link}
 					onPress={event=> {
-					this.props.navigator.$push("register/step2", {
-						message: "我是来自注册第一步的参数"
-					});
-				}}>go to register step2</Text>
+						this.props.navigator.$push("register/step2", {
+							message: "我是来自注册第一步的参数"
+						});
+					}}>go to register step2</Text>
 				<Text
 					style={styles.button}
 					onPress={event=> {
-					this.props.navigator.$refreshNavBar({
-						hideNavigationBar: true
-					});
-				}}>hide navigation bar</Text>
+						this.props.navigator.$refreshNavBar({
+							hideNavigationBar: true
+						});
+					}}>hide navigation bar</Text>
 			</View>
 		);
 	}
@@ -128,26 +135,26 @@ class RegisterStep2 extends Component {
 				<Text
 					style={styles.button}
 					onPress={event=> {
-					this.props.navigator.$refreshNavBar({
-						hideNavigationBar: false
-					});
-				}}>show navigation bar</Text>
+						this.props.navigator.$refreshNavBar({
+							hideNavigationBar: false
+						});
+					}}>show navigation bar</Text>
 				<Text
 					style={styles.button}
 					onPress={event=> {
-					this.props.navigator.$refreshNavBar({
-						renderRightButton: ()=> {
-							return <Text style={{color: "white"}}>REGISTER</Text>
-						}
-					});
-				}}>show right button</Text>
+						this.props.navigator.$refreshNavBar({
+							renderRightButton: ()=> {
+								return <Text style={{color: "white"}}>REGISTER</Text>
+							}
+						});
+					}}>show right button</Text>
 				<Text
 					style={styles.button}
 					onPress={event=> {
-					this.props.navigator.$refreshNavBar({
-						renderRightButton: null
-					});
-				}}>hide right button</Text>
+						this.props.navigator.$refreshNavBar({
+							renderRightButton: null
+						});
+					}}>hide right button</Text>
 			</View>
 		);
 	}
@@ -167,9 +174,9 @@ class Login extends Component {
 			<Text
 				style={styles.button}
 				onPress={event=> {
-				isLogin = true;
-				this.props.navigator.$replace(this.props.route.$previousPath);
-			}}>login</Text>
+					isLogin = true;
+					this.props.navigator.$replace(this.props.route.$previousPath);
+				}}>login</Text>
 		</View>
 	}
 }
@@ -178,8 +185,18 @@ const routes = [{
 	path: "home",
 	title: "Home",
 	component: Home,
-	onEnter:()=>{
+	onEnter: ()=> {
 		console.log("enter home");
+	},
+	renderRightButton: (route, navigator, index)=> {
+		return (
+			<View style={{flex: 1,flexDirection:"row",
+				backgroundColor: "blue", justifyContent: "center",
+			alignItems:"center"}}>
+				<Text style={{color: "white"}}>Right</Text>
+			</View>
+		);
+
 	}
 }, {
 	path: "register",
@@ -190,7 +207,7 @@ const routes = [{
 		title: "Register-Step2",
 		component: RegisterStep2
 	}],
-	onEnter:()=>{
+	onEnter: ()=> {
 		console.log("enter register");
 	}
 }, {
@@ -209,22 +226,43 @@ const routes = [{
 }];
 
 export default class APP extends Component {
+	constructor(props){
+		super(props);
+		this.state={
+			layout:{}
+		}
+	}
 	render() {
 		return (
-			<Router ref="router" renderTitle={(route)=> {
-				return <Text style={{color: "white"}}>{route.title}</Text>;
-			}}
+			<Router ref="router"
+					renderTitle={(route)=> {
+						return (
+							<View style={{
+								backgroundColor: "gray", flex: 1, justifyContent: "center",
+								width: size.width - 72 * 2, alignItems: "center"
+							}} onLayout={({nativeEvent})=>{
+								this.setState({
+									layout:nativeEvent.layout
+								})
+							}}>
+								<Text style={{color: "white"}}>{route.title}-{JSON.stringify(this.state.layout)}</Text>
+							</View>
+						);
+					}}
 					onChange={(type)=> {
 						console.log(type);
 					}}
 					renderLeftButton={(route, navigator, index)=> {
-						if (index > 0) {
-							return <Text style={{color: "white"}} onPress={event=> {
-								navigator.$pop();
-							}}>back</Text>
-						}
-						return null;
+						return (
+							<View style={{flex: 1, backgroundColor: "blue", justifyContent: "center"}}>
+								<Text style={{color: "white"}} onPress={event=> {
+									navigator.$pop();
+								}}>back</Text>
+							</View>
+						);
+
 					}}
+
 					navigationBarStyle={{backgroundColor: "black"}}
 					routes={routes}></Router>
 		);

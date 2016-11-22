@@ -310,4 +310,21 @@ class Test extends Component{
 }
 ```
 
+# How to place navigation title in the middle on android?
+```javascript
+<Router
+    renderTitle={(route)=>{
+    	return (
+    		<View style={{flex:1,justifyContent:"center",alignItems:"center",...Platform.select({
+    			android:{
+    				width:Dimensions.get("window").width-72*2
+    			}
+    		})}}>
+    		    <Text>{route.title}</Text>
+    		</View>
+    	);
+    }}
+    />
+```
+
 

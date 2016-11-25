@@ -1,6 +1,6 @@
 {
   "name": "mkp-react-native-router",
-  "version": "1.5.12",
+  "version": "1.5.13",
   "description": "react-native-router",
   "main": "index.js",
   "directories": {
@@ -16,7 +16,9 @@
   },
   "keywords": [
     "react-native",
-    "react-native-router"
+    "react-native-router",
+    "router-flux",
+    "router-redux"
   ],
   "author": "jean.h.ma",
   "license": "ISC",

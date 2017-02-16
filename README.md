@@ -8,7 +8,7 @@
 [![npm download](https://img.shields.io/npm/dt/mkp-react-native-router.svg)](https://www.npmjs.com/package/mkp-react-native-router)
 <!-- endbadge -->
 
-This module is Navigator extension.you can manage all of route with configuration.<br/>
+此组件是对React Native Navigator的一个封装,让React Native开发的页面以配置的方式配置路由.<br/>
 <img src="https://raw.githubusercontent.com/MonkeyKingPlus/react-native-router/master/test/demo/react-native-router-demo.gif"/>
 
 # Install
@@ -16,6 +16,7 @@ This module is Navigator extension.you can manage all of route with configuratio
 npm install mkp-react-native-router --save
 ```
 # Support
+
 IOS/Android
 
 # Quick Start
@@ -27,7 +28,7 @@ IOS/Android
         renderLeftButton={(route, navigator, index)=> {
             if (index > 0) {
                 return <Text style={{color: "white"}} onPress={event=> {
-                    navigator.$pop();
+                    navigator.pop();
                 }}>back</Text>
             }
             return null;
@@ -54,20 +55,25 @@ IOS/Android
 # Router Props
 
 ## renderTitle(route:route,navigator:NavigatorEx,index:number,navState:route[])
-Set title for navigation.<br/>
-the default value will return a text node:
+
+此方法用于设置如何render Navigation Title.<br/>
+默认将按照如下方式进行输出
 ```javascript
 <Text>{route.title}</Text>
 ```
 
 ## renderLeftButton(route:route,navigator:NavigatorEx,index:number,navState:route[])
-Set back button or left button for navigation, null as default value.
+
+此方法用于设置如何render left buttons.默认情况下什么也不输出.
 
 ## navigationBarStyle
-Set navigation style
+
+设置导航栏的样式
 
 ## routes
-The first route as initial route
+
+路由配置
+
 ### type route
 
 * path:string<br/>
@@ -87,53 +93,42 @@ this is required.
 * component:Component
 * onEnter(route:route):function<br/>
 invoke when navigator.$push,you can return a available path to redirect or nothing.<br/>
-NOTE1:if you return a available path in here , you can access route.$previousRoute and route.$previousPath in new path.<br/>
+NOTE1:if you return a available path in here , you can access route.$previousRoute and route.prevPath in new path.<br/>
 NOTE2:don't be invoked when start app from initial route.
 
 ## configureScene()
-configure page transition, you can refer to [React Native Navigator](https://facebook.github.io/react-native/docs/navigator.html#configurescene)<br/>
-the default value is Navigator.SceneConfigs.HorizontalSwipeJump.
 
-## onChange(type:string,route:route,path:string)
-Invoke when navigator $push,$pop,$replace,$refreshNavBar
+配置页面的跳转动画,具体值可以参考[React Native Navigator](https://facebook.github.io/react-native/docs/navigator.html#configurescene)<br/>
+默认值是Navigator.SceneConfigs.HorizontalSwipeJump.
 
 # navigator methods
-## $push(path:string[,route:route])
-router will push to target path.the parameter route will override route which find by path.
+
+## push2(path:string[,route:route])
 ```javascript
 //go to 'register'
-this.props.navigator.$push("register")
+this.props.navigator.push2("register")
 //go to 'register/register-step2' 
-this.props.navigator.$push("register/register-step2");
+this.props.navigator.push2("register/register-step2");
 //override route which find by path with the second parameter
-this.props.navigator.$push("register",{
+this.props.navigator.push2("register",{
 	title:"Register"
 });
 ```
-in addition you can pass props through the second parameter.
+## replace2(path:string[,route:route])
+## refresh([route:route])
 ```javascript
-this.props.navigator.$push("register",{
-	tel:"13100000000"
-})
-```
-## $pop()
-back to previous route.
-## $replace(path:string[,route:route])
-replace current route with path. the second parameter is the same as $push
-## $refreshNavBar([route:route])
-Refresh navigation's style.
-```javascript
-this.props.navigator.$refreshNavBar({
+this.props.navigator.refresh({
     title:"test",
     renderLeftButton:()=>{},
     renderRightButton:()=>{}
 })
 ```
-NOTE:this method must't be calling in component's lifecycle, such as componentDidMount,only calling in <a href="#scenedidfocusroute">sceneDidFocus</a>sceneDidFocus.
 
 # Router event
+
 ## sceneDidFocus(route)
-Refer to [Navigator.onDidFocus](https://facebook.github.io/react-native/docs/navigator.html#ondidfocus)
+
+参考[Navigator.onDidFocus](https://facebook.github.io/react-native/docs/navigator.html#ondidfocus)
 ```javascript
 class TestComponent extends Component{
 	sceneDidFocus(){
@@ -142,7 +137,8 @@ class TestComponent extends Component{
 }
 ```
 ## sceneWillFocus(route)
-Refer to [Navigator.onWillFocus](https://facebook.github.io/react-native/docs/navigator.html#onwillfocus)
+
+参考[Navigator.onWillFocus](https://facebook.github.io/react-native/docs/navigator.html#onwillfocus)
 ```javascript
 class TestComponent extends Component{
 	sceneWillFocus(){
@@ -183,42 +179,14 @@ const routes = [{
 	}
 }];
 ```
-after login success.
+登录成功后
 ```javascript
-this.props.navigator.$replace(this.props.route.$previousPath);
+this.props.navigator.replace2(this.props.route.prevPath);
 ```
-or
+或者
 ```javascript
-this.props.navigator.$pop();
+this.props.navigator.pop();
 ```
-## Async Authentication
-More time we determine login state with token , but we can't get token value in sync ,
-so we need a page to initial some data , such as token . after we can use these data in sync.
-when you need to restore redux , the step is useful.
-sample code following:
-```javascript
-
-window.appData={
-	token:""
-};
-
-class Init extends Component{
-	
-	componentDidMount(){
-		getToken().then(value=>{
-			if(value){
-			    window.appData.token=value;
-			    this.props.navigator.$replace("home");
-			}
-			else{
-				this.props.navigator.$replace("login");
-			}
-		})
-	}
-	
-}
-```
-you can get current net state or anything data in here except above.
 
 # How to use Router with Redux
 ```javascript
@@ -254,7 +222,7 @@ const RouterWithRedux = connect()(Router);
             routes={routes}></RouterWithRedux>
 </Provider>
 ```
-you can deal with some action that is 'SCENE_WILL_FOCUS' and 'SCENE_DID_FOCUS' in reducer. example following,
+监听action
 ```javascript
 import {ActionTypes} from "mkp-react-native-router";
 export function testReducer(state,action){
@@ -274,7 +242,6 @@ export function testReducer(state,action){
 ```
 
 # How to deal with hardware back event on android 
-Router provide two property currentRoute and navigator, you can do something through these property. following code:
 ```javascript
 class Test extends Component{
     constructor(props){
@@ -297,7 +264,7 @@ class Test extends Component{
                 })
             }
             else{
-                navigator.$pop();
+                navigator.pop();
             }
             return true;
         });

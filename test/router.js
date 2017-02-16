@@ -63,9 +63,7 @@ class NavigatorEx extends Navigator {
 		return null;
 	}
 
-	static propTypes = {
-		onChange: PropTypes.func
-	}
+
 
 	/**
 	 * find target route by path
@@ -107,7 +105,7 @@ class NavigatorEx extends Navigator {
 	 * @param {boolean} [ops.hideNavigationBar=false] - it is show navigation bar by ops.hideNavigationBar
 	 * @param {function} [ops.onEnter]
 	 * */
-	$push(path, ops = {}) {
+	push2(path, ops = {}) {
 		let route = {
 			...this._findRouteByPath(path),
 			...ops
@@ -118,22 +116,14 @@ class NavigatorEx extends Navigator {
 				route = {
 					...this._findRouteByPath(redirectPath),
 					...ops,
-					$previousPath: path,
-					$previousRoute: route
+					prevPath: path,
+					prevRoute: route
 				}
 			}
 		}
-		this.props.onChange("$push", route, path);
-		this.push(route);
+		super.push(route);
 	}
 
-	/**
-	 * pop route from router stack
-	 * */
-	$pop() {
-		this.props.onChange("$pop", this.currentRoute);
-		this.pop();
-	}
 
 	/**
 	 * replace current route with the path
@@ -146,13 +136,12 @@ class NavigatorEx extends Navigator {
 	 * @param {boolean} [ops.hideNavigationBar=false] - it is show navigation bar by ops.hideNavigationBar
 	 * @param {function} [ops.onEnter]
 	 * */
-	$replace(path, ops = {}) {
+	replace2(path, ops = {}) {
 		let route = {
 			...this._findRouteByPath(path),
 			...ops
 		};
-		this.props.onChange("$replace", route, path);
-		this.replace(route);
+		super.replace(route);
 	}
 
 	/**
@@ -164,9 +153,8 @@ class NavigatorEx extends Navigator {
 	 * @param {function} [ops.renderTitle] - render title
 	 * @param {boolean} [ops.hideNavigationBar=false] - it is show navigation bar by ops.hideNavigationBar
 	 * */
-	$refreshNavBar(ops = {}) {
+	refresh(ops = {}) {
 		setTimeout(()=> {
-			this.props.onChange("$refreshNavBar", ops);
 			this._navBar.refresh(ops);
 		}, 128);
 	}
@@ -190,7 +178,6 @@ export default class Router extends Component {
 		routes: PropTypes.array.isRequired,
 		navigationBarStyle: PropTypes.any,
 		configureScene: PropTypes.func,
-		onChange: PropTypes.func
 	}
 
 	static defaultProps = {
@@ -198,8 +185,7 @@ export default class Router extends Component {
 		configureScene: ()=> {
 			return Navigator.SceneConfigs.HorizontalSwipeJump;
 		},
-		onChange: ()=> {
-		}
+
 	};
 
 	_buildNavigationBar() {
@@ -296,18 +282,25 @@ export default class Router extends Component {
 					}
 				}}
 				routes={this.props.routes}
-				onChange={this.props.onChange.bind(this)}
 				navigationBar={this.navigationBarEx}
 				configureScene={(route, routeStack)=> {
 					return this.props.configureScene(route, routeStack);
 				}}
 				renderScene={(route, navigator)=> {
+					console.log(route)
+					let newProps=Object.assign({},route||{});
+					delete newProps.component;
+					delete newProps.renderLeftButton;
+					delete newProps.renderRightButton;
+					delete newProps.hideNavigationBar;
+					delete newProps.routes;
+					delete newProps.onEnter;
 					return <route.component
 						ref={ref=> {
-							route.$ref = ref;
+							route.ref = ref;
 						}}
 						navigator={navigator}
-						route={route}/>
+						{...newProps}/>
 				}}></NavigatorEx>
 		);
 	}

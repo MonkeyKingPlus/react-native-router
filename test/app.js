@@ -51,22 +51,22 @@ class Home extends Component {
 			<View
 				style={styles.container}>
 				<Text style={styles.button} onPress={event=> {
-					this.props.navigator.$refreshNavBar({
+					this.props.navigator.refresh({
 						hideNavigationBar: false
 					});
 				}}>show navigation bar</Text>
 				<Text style={styles.button} onPress={event=> {
-					this.props.navigator.$refreshNavBar({
+					this.props.navigator.refresh({
 						hideNavigationBar: true
 					});
 				}}>hide navigation bar</Text>
 				<Text style={styles.button} onPress={event=> {
 					/*
-					 this.props.navigator.$refreshNavBar({
+					 this.props.navigator.refresh({
 					 title: "New Title"
 					 });
 					 */
-					this.props.navigator.$refreshNavBar({
+					this.props.navigator.refresh({
 						title: "New Title",
 						renderTitle: (route)=> {
 							return <Text style={{color: "red"}}>{route.title}</Text>
@@ -74,23 +74,23 @@ class Home extends Component {
 					});
 				}}>set title</Text>
 				<Text style={styles.button} onPress={event=> {
-					this.props.navigator.$refreshNavBar();
+					this.props.navigator.refresh();
 				}}>refresh</Text>
 				<Text style={styles.button} onPress={event=> {
-					this.props.navigator.$replace("register");
-				}}>replace</Text>
+					this.props.navigator.replace2("register");
+				}}>replace2</Text>
 				<Text style={styles.button} onPress={event=> {
 					this.setState({count: this.state.count + 1});
 				}}>{this.state.count}</Text>
 				<Text style={styles.link} onPress={event=> {
-					this.props.navigator.$push("register", {
+					this.props.navigator.push2("register", {
 						renderRightButton: ()=> {
 							return <Text style={{color: "white"}}>ADD</Text>
 						}
 					});
 				}}>go register</Text>
 				<Text style={styles.link} onPress={event=> {
-					this.props.navigator.$push("mine");
+					this.props.navigator.push2("mine");
 				}}>go account</Text>
 			</View>
 		);
@@ -110,14 +110,14 @@ class RegisterStep1 extends Component {
 				<Text
 					style={styles.link}
 					onPress={event=> {
-						this.props.navigator.$push("register/step2", {
+						this.props.navigator.push2("register/step2", {
 							message: "我是来自注册第一步的参数"
 						});
 					}}>go to register step2</Text>
 				<Text
 					style={styles.button}
 					onPress={event=> {
-						this.props.navigator.$refreshNavBar({
+						this.props.navigator.refresh({
 							hideNavigationBar: true
 						});
 					}}>hide navigation bar</Text>
@@ -131,18 +131,18 @@ class RegisterStep2 extends Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				<Text>{this.props.route.message}</Text>
+				<Text>{this.props.message}</Text>
 				<Text
 					style={styles.button}
 					onPress={event=> {
-						this.props.navigator.$refreshNavBar({
+						this.props.navigator.refresh({
 							hideNavigationBar: false
 						});
 					}}>show navigation bar</Text>
 				<Text
 					style={styles.button}
 					onPress={event=> {
-						this.props.navigator.$refreshNavBar({
+						this.props.navigator.refresh({
 							renderRightButton: ()=> {
 								return <Text style={{color: "white"}}>REGISTER</Text>
 							}
@@ -151,7 +151,7 @@ class RegisterStep2 extends Component {
 				<Text
 					style={styles.button}
 					onPress={event=> {
-						this.props.navigator.$refreshNavBar({
+						this.props.navigator.refresh({
 							renderRightButton: null
 						});
 					}}>hide right button</Text>
@@ -175,7 +175,7 @@ class Login extends Component {
 				style={styles.button}
 				onPress={event=> {
 					isLogin = true;
-					this.props.navigator.$replace(this.props.route.$previousPath);
+					this.props.navigator.replace2(this.props.prevPath);
 				}}>login</Text>
 		</View>
 	}
@@ -249,14 +249,12 @@ export default class APP extends Component {
 							</View>
 						);
 					}}
-					onChange={(type)=> {
-						console.log(type);
-					}}
+				
 					renderLeftButton={(route, navigator, index)=> {
 						return (
 							<View style={{flex: 1, backgroundColor: "blue", justifyContent: "center"}}>
 								<Text style={{color: "white"}} onPress={event=> {
-									navigator.$pop();
+									navigator.pop2();
 								}}>back</Text>
 							</View>
 						);

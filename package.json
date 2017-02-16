@@ -1,6 +1,6 @@
 {
   "name": "mkp-react-native-router",
-  "version": "1.5.13",
+  "version": "1.6.0",
   "description": "react-native-router",
   "main": "index.js",
   "directories": {
@@ -21,7 +21,7 @@
     "router-redux"
   ],
   "author": "jean.h.ma",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/MonkeyKingPlus/react-native-router/issues"
   },
